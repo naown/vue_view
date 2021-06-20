@@ -1,8 +1,10 @@
 import axios from 'axios'
 import router from "./router";
 import Element from 'element-ui'
+import store from "./store"
 
-axios.defaults.baseURL = "http://localhost:8081"
+axios.defaults.baseURL = "/api"
+//axios.defaults.baseURL = "http://8.131.60.144:8081"
 
 const request = axios.create({
     timeout: 50000,
@@ -31,6 +33,7 @@ request.interceptors.response.use(response => {
         error.message = error.response.data.msg
     }
     if (error.response.status === 401){
+        store.commit('REMOVE_TOKEN')
         router.push('/login')
     }
     Element.Message.error(error.message,{duration:3000})
