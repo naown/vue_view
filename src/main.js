@@ -11,6 +11,9 @@ import '@/assets/css/reset.css'
 // 引入自定义的axios
 import axios from './axios'
 import global from './globalFun'
+
+// 引入时间格式化
+import './api/dateTimeFormatUtils'
 // 全局注册axios
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios

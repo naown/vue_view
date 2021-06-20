@@ -5,13 +5,13 @@
         <el-button type="primary" @click="dialogVisible = true">新增</el-button>
       </el-form-item>
     </el-form>
+    <!-- default-expand-all属性设置默认展开全部 -->
     <el-table
         :data="tableData"
         style="width: 100%;margin-bottom: 20px;"
         row-key="id"
-        border
+        lazy
         stripe
-        default-expand-all
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
       <el-table-column
           prop="name"
@@ -20,7 +20,7 @@
           width="180">
       </el-table-column>
       <el-table-column
-          prop="perm"
+          prop="perms"
           label="权限编码"
           sortable
           width="180">
@@ -47,7 +47,7 @@
           label="菜单组件">
       </el-table-column>
       <el-table-column
-          prop="orderNumber"
+          prop="orderNum"
           label="排序号">
       </el-table-column>
       <el-table-column
@@ -62,10 +62,10 @@
           prop="operate"
           label="操作">
         <template slot-scope="scope">
-          <el-button type="text" @click="editHandle(scope.row)">编辑</el-button>
+          <el-button size="mini" round type="success" style="margin-right: 10px" @click="editHandle(scope.row)">编辑</el-button>
           <template>
-            <el-popconfirm title="这是一段内容确定删除吗？" @confirm="delHandle(scope.row.id)">
-              <el-button type="text" slot="reference">删除</el-button>
+            <el-popconfirm title="确定要删除该菜单吗？" @confirm="delHandle(scope.row.id)">
+              <el-button size="mini" round type="danger" slot="reference">删除</el-button>
             </el-popconfirm>
           </template>
         </template>
@@ -77,10 +77,11 @@
         title="提示"
         :visible.sync="dialogVisible"
         width="600px"
+        :close-on-click-modal="false"
         :before-close="handleClose">
       <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm">
         <el-form-item label="上级菜单" prop="parentId">
-          <el-select v-model="editForm.parentId" placeholder="请选择上级菜单">
+          <el-select v-model="editForm.parentId === 0 ? '暂无' : editForm.parentId" placeholder="请选择上级菜单">
             <template v-for="item in tableData">
               <el-option :label="item.name" :value="item.id"></el-option>
               <template v-for="itemChildren in item.children">
@@ -123,7 +124,7 @@
           <el-input-number v-model="editForm.orderNum" :min="1" label="排序号"></el-input-number>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('editForm')">立即创建</el-button>
+          <el-button type="primary" @click="submitForm('editForm')">保存</el-button>
           <el-button @click="resetForm('editForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -140,8 +141,8 @@ name: "Menu",
       editForm: {
         perms: '',
         orderNum: '',
-        status: 0,
-        type: 0
+        status: '',
+        type: ''
       },
       editFormRules: {
         parentId: [
@@ -194,8 +195,8 @@ name: "Menu",
       })
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
       this.editForm = {}
+      //this.$refs[formName].resetFields(); 加上会出现查看菜单时直接修改了显示的值
     },
     editHandle(editForm) {
       this.editForm = editForm
@@ -219,5 +220,7 @@ name: "Menu",
 </script>
 
 <style scoped>
-
+  .el-button--mini, .el-button--mini.is-round{
+    padding: 7px 10px;
+  }
 </style>

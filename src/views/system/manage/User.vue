@@ -70,22 +70,20 @@
           <el-tag size="small" v-else-if="scope.row.status === 0" type="danger">禁用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-          prop="created"
-          label="创建时间"
-          show-overflow-tooltip>
+      <el-table-column prop="created" label="创建时间" show-overflow-tooltip>
+        <template v-slot="scope">{{ scope.row.created | dateFormat }}</template>
       </el-table-column>
       <el-table-column
           prop="operate"
           label="操作"
-      width="280px">
+      width="320px">
         <template slot-scope="scope">
-          <el-button type="text" @click="permHandler(scope.row)">分配角色</el-button>
-          <el-button type="text" @click="repassHandler(scope.row.id,scope.row.username)">重置密码</el-button>
-          <el-button type="text" @click="editHandle(scope.row)">编辑</el-button>
+          <el-button size="mini" round type="primary" @click="permHandler(scope.row)">分配角色</el-button>
+          <el-button size="mini" round type="info" @click="repassHandler(scope.row.id,scope.row.username)">重置密码</el-button>
+          <el-button size="mini" round type="success" style="margin-right: 10px" @click="editHandle(scope.row)">编辑</el-button>
           <template>
-            <el-popconfirm title="这是一段内容确定删除吗？" @confirm="delHandle(scope.row.id)">
-              <el-button type="text" slot="reference">删除</el-button>
+            <el-popconfirm title="确定要删除该用户吗？" @confirm="delHandle(scope.row.id)">
+              <el-button size="mini" round type="danger" slot="reference">删除</el-button>
             </el-popconfirm>
           </template>
         </template>
@@ -107,6 +105,7 @@
         title="提示"
         :visible.sync="dialogVisible"
         width="600px"
+        :close-on-click-modal="false"
         :before-close="handleClose">
       <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm">
         <el-form-item label="用户名" prop="username">
@@ -125,7 +124,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('editForm')">立即创建</el-button>
+          <el-button type="primary" @click="submitForm('editForm')">保存</el-button>
           <el-button @click="resetForm('editForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -134,6 +133,7 @@
     <!-- 权限弹窗 -->
     <el-dialog
         title="分配权限"
+        :close-on-click-modal="false"
         :visible.sync="permDialogVisible"
         width="600px">
       <el-form :model="roleForm">
@@ -277,7 +277,7 @@ name: "User",
       })
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      //this.$refs[formName].resetFields();
       this.editForm = {}
     },
     handleClose() {
@@ -318,7 +318,7 @@ name: "User",
     }
   },
   created() {
-  this.getRoleList();
+  this.getRoleList(); // TODO 此方法为加载角色权限用来分配权限，考虑优化此方法
   this.getUserList()
   }
 }
@@ -328,5 +328,8 @@ name: "User",
   .el-pagination{
     float: right;
     margin-top: 16px;
+  }
+  .el-button--mini, .el-button--mini.is-round{
+    padding: 7px 10px;
   }
 </style>

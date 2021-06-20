@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-
+// TODO 需要将menuList存放到sessionStorage里，否则每次加载很费时间
 export default {
   state: {
     // 菜单列表

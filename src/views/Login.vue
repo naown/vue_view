@@ -23,7 +23,7 @@
           <el-image :src="captchaImg" class="captchaImg" @click="getCaptchaImg()"></el-image>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('loginForm')">立即创建</el-button>
+          <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
           <el-button @click="resetForm('loginForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -40,7 +40,7 @@ name: "Login",
     return {
       loginForm: {
         username: 'admin',
-        password: '111111',
+        password: '222222',
         code: '11111',
         key: 'aaaaa'
       },
@@ -67,6 +67,9 @@ name: "Login",
             const jwt = res.headers['authorization']
             this.$store.commit('SET_TOKEN',jwt)
             this.$router.push('/index')
+          }).catch(()=>{
+            console.log("登录失败")
+            this.getCaptchaImg()
           })
         } else {
           console.log('error submit!!');
@@ -79,7 +82,6 @@ name: "Login",
     },
     getCaptchaImg(){
       this.$axios.get('/captcha').then(res => {
-        console.log(res)
         this.loginForm.key = res.data.data.key
         this.captchaImg = res.data.data.captchaImg
         this.loginForm.code = ''
