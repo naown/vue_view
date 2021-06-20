@@ -1,10 +1,15 @@
 <template>
   <el-container>
-    <el-aside width="200px">
-      <side-menu></side-menu>
+    <el-aside width="auto">
+      <side-menu :sidebar="sidebar"></side-menu>
     </el-aside>
     <el-container>
       <el-header>
+        <el-button class="sidebar" size="mini" plany @click="changeSidebar">
+          <span v-show="!sidebar" class="el-icon-s-fold font"></span>
+          <span v-show="sidebar" class="el-icon-s-unfold font"></span>
+        </el-button>
+        <Breadcrumb class="breadcrumb"></Breadcrumb>
         <!-- 首页标题 -->
         <strong>Vue管理系统</strong>
         <!-- 首页头像 -->
@@ -21,7 +26,7 @@
               <el-dropdown-item @click.native="logout()">退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <el-link href="www.baidu.com" target="_blank">网站</el-link>
+          <el-link href="https://www.baidu.com/" target="_blank">网站</el-link>
           <el-link href="https://www.bilibili.com/" target="_blank">B站</el-link>
         </div>
       </el-header>
@@ -38,6 +43,7 @@
 <script>
 import SideMenu from "./index/SideMenu";
 import Tabs from "./index/Tabs";
+import Breadcrumb from "../components/Breadcrumb";
 export default {
   name: "Home",
   data() {
@@ -45,12 +51,13 @@ export default {
       userInfo: {
         id: '',
         username: '',
-        avatar: ''
-      }
+        avatar: '',
+      },
+      sidebar: false
     }
   },
   components:{
-    SideMenu,Tabs
+    SideMenu,Tabs,Breadcrumb
   },
   methods: {
     getUserInfo() {
@@ -65,6 +72,9 @@ export default {
         this.$store.commit("RESET_STATE")
         this.$router.push('/login')
       })
+    },
+    changeSidebar(){
+      this.sidebar = !this.sidebar
     }
   },
   created() {
@@ -91,7 +101,7 @@ export default {
   height: 100%;
 }
 .el-header {
-  background-color: #B3C0D1;
+  background-color: white;
   color: #333;
   text-align: center;
   line-height: 60px;
@@ -109,5 +119,23 @@ export default {
 }
 a {
   text-decoration: none;
+}
+.breadcrumb{
+  float: left;
+  height: 57px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.sidebar{
+  float: left;
+  position: relative;
+  top: 15px;
+  right: 10px;
+  background-color: white;
+  border: 0 solid white;
+}
+.font{
+  font-size: 20px;
 }
 </style>
