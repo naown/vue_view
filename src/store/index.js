@@ -13,6 +13,9 @@ export default new Vuex.Store({
     SET_TOKEN: (state, token) => {
       state.token = token
       localStorage.setItem("token", token)
+    },
+    REMOVE_TOKEN: (state) => {
+      localStorage.removeItem("token")
     }
   },
   actions: {
