@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Index from '../views/Index.vue'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 import Role from "../views/system/manage/Role";
 import Menu from "../views/system/manage/Menu";
 import User from "../views/system/manage/User";
@@ -9,13 +11,14 @@ import User from "../views/system/manage/User";
 import axios from "../axios";
 //import axios from "axios";
 import store from "../store"
+import {MessageBox} from "_element-ui@2.15.3@element-ui";
 
 Vue.use(VueRouter)
-/*
+
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
-}*/
+}
 
 const routes = [
   {
@@ -69,6 +72,9 @@ const router = new VueRouter({
 // 路由守卫
 router.beforeEach((to, from, next) => {
 
+  // 进度条
+  NProgress.start()
+
   let hasRoute = store.state.menus.hasRoute
   let token = localStorage.getItem('token');
   console.log(hasRoute,'hasRoute')
@@ -76,12 +82,9 @@ router.beforeEach((to, from, next) => {
 
   if (to.path === '/login'){
     next()
-
   }else if (!token){
     next({path: '/login'})
-
   }else if (token && !hasRoute) {
-    // TODO 浏览器端刷新一次此方法会执行两次 需要修改
     axios.get('/menu/nav',{
       headers: {
         Authorization: localStorage.getItem("token")
@@ -89,12 +92,12 @@ router.beforeEach((to, from, next) => {
     }).then(res =>{
       // 拿到menu列表
       console.log('访问了菜单列表')
-      store.commit('SET_MENUS',res.data.data.nav)
+      store.commit('SET_MENUS',res.data.nav)
       // 拿到用户权限
-      store.commit('SET_PERMISSION',res.data.data.authorizations)
+      store.commit('SET_PERMISSION',res.data.authorizations)
 
       let newRoutes = router.options.routes
-      res.data.data.nav.forEach(menu => {
+      res.data.nav.forEach(menu => {
         if (menu.children) {
           menu.children.forEach(e => {
             let route = menuToRoute(e)
@@ -108,9 +111,9 @@ router.beforeEach((to, from, next) => {
       hasRoute = true
       store.commit("CHANGE_ROUTE_STATUS",hasRoute)
       console.log(store.state.menus.hasRoute,'store的hasRoute')
+      console.log(res,'菜单')
     })
   }
-
   next()
 })
 
@@ -130,5 +133,9 @@ const menuToRoute = (menu) => {
  /* route.component = () => import('../views/'+ menu.component +'.vue')*/
   return route
 }
+
+router.afterEach(() => {
+  NProgress.done() // 结束Progress
+})
 
 export default router

@@ -16,6 +16,7 @@ export default {
     editableTabs: [{
       title: '首页',
       name: 'Index',
+      type: ''
     }]
   },
   mutations: {

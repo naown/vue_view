@@ -222,10 +222,10 @@ name: "User",
           size: this.size
         }
       }).then(res => {
-        this.tableData = res.data.data.records
-        this.size = res.data.data.size
-        this.current = res.data.data.current
-        this.total = res.data.data.total
+        this.tableData = res.data.records
+        this.size = res.data.size
+        this.current = res.data.current
+        this.total = res.data.total
       })
     },
     handleSizeChange(val){
@@ -286,7 +286,7 @@ name: "User",
     },
     getRoleList() {
       this.$axios.get('/role/list').then(res => {
-        this.roleTreeData = res.data.data.records
+        this.roleTreeData = res.data.records
       })
     },
     repassHandler(id,username){

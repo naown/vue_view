@@ -82,8 +82,9 @@ name: "Login",
     },
     getCaptchaImg(){
       this.$axios.get('/captcha').then(res => {
-        this.loginForm.key = res.data.data.key
-        this.captchaImg = res.data.data.captchaImg
+        console.log(res,'captcha')
+        this.loginForm.key = res.data.key
+        this.captchaImg = res.data.captchaImg
         this.loginForm.code = ''
       })
     }

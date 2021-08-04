@@ -81,7 +81,7 @@
         :before-close="handleClose">
       <el-form :model="editForm" :rules="editFormRules" ref="editForm" label-width="100px" class="demo-editForm">
         <el-form-item label="上级菜单" prop="parentId">
-          <el-select v-model="editForm.parentId === 0 ? '暂无' : editForm.parentId" placeholder="请选择上级菜单">
+          <el-select v-model="editForm.parentId === 0 ? '无' : editForm.parentId" placeholder="请选择上级菜单">
             <template v-for="item in tableData">
               <el-option :label="item.name" :value="item.id"></el-option>
               <template v-for="itemChildren in item.children">
@@ -174,7 +174,7 @@ name: "Menu",
     getMenuTree() {
       this.$axios.get('/menu/list').then(res =>{
         console.log(res,'res')
-        this.tableData = res.data.data
+        this.tableData = res.data
       })
     },
     submitForm(formName){

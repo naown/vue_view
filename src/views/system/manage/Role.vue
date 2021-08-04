@@ -230,10 +230,10 @@ name: "Role",
         }
       }).then(res =>{
         console.log(res,'role/list')
-        this.tableData = res.data.data.records
-        this.size = res.data.data.size
-        this.current = res.data.data.current
-        this.total = res.data.data.total
+        this.tableData = res.data.records
+        this.size = res.data.size
+        this.current = res.data.current
+        this.total = res.data.total
       })
     },
     editHandle(editForm) {
@@ -261,13 +261,13 @@ name: "Role",
     permHandler(id) {
       this.permDialogVisible = true
       this.$axios.get('/role/info/'+ id).then(res => {
-        this.$refs.permTree.setCheckedKeys(res.data.data.menuIds)
-        this.permForm = res.data.data
+        this.$refs.permTree.setCheckedKeys(res.data.menuIds)
+        this.permForm = res.data
       })
     },
     getPermTreeData() {
       this.$axios.get('/menu/list').then(res => {
-        this.permTreeData = res.data.data
+        this.permTreeData = res.data
       })
     },
     submitPermFormHandler() {

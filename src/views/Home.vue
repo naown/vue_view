@@ -31,7 +31,8 @@
         </div>
       </el-header>
       <el-main>
-        <tabs></tabs>
+<!--        <tabs></tabs>-->
+        <tags></tags>
         <div style="margin: 0 15px">
           <router-view />
         </div>
@@ -43,6 +44,7 @@
 <script>
 import SideMenu from "./index/SideMenu";
 import Tabs from "./index/Tabs";
+import Tags from "./index/Tags";
 import Breadcrumb from "../components/Breadcrumb";
 export default {
   name: "Home",
@@ -57,12 +59,12 @@ export default {
     }
   },
   components:{
-    SideMenu,Tabs,Breadcrumb
+    SideMenu,Tabs,Tags,Breadcrumb
   },
   methods: {
     getUserInfo() {
       this.$axios.get('/userInfo').then(res => {
-        this.userInfo = res.data.data
+        this.userInfo = res.data
       })
     },
     logout() {
