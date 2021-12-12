@@ -11,7 +11,6 @@ import User from "../views/system/manage/User";
 import axios from "../axios";
 //import axios from "axios";
 import store from "../store"
-import {MessageBox} from "_element-ui@2.15.3@element-ui";
 
 Vue.use(VueRouter)
 
